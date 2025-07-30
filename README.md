@@ -25,13 +25,10 @@ vga_top.v: Modulul principal care integrează toate componentele. Acesta instan�
 
 Clocking Wizard pentru a genera ceasul de 148.5 MHz , controlerul de temporizare VGA și modulul de logică pentru senzor. De asemenea, conectează portul de intrare 
 
-
-
 Motion_detected la logica internă.
 
 
 vga_1920X1080.v: Un controler de temporizare VGA care generează semnalele de sincronizare h_sync și v_sync pentru o rezoluție de 1920x1080 pixeli. Acesta informează restul sistemului când se află în zona de afișare activă prin semnalul 
-
 display_on.
 
 
