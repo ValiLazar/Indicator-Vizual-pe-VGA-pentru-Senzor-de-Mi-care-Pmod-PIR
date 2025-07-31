@@ -1,40 +1,42 @@
-# Indicator Vizual pe VGA pentru Senzor de Miscare Pmod-PIR
+VGA Visual Indicator for Pmod PIR Motion Sensor
+A simple FPGA project that displays a full-screen color indicator on a VGA monitor based on input from a Pmod PIR motion sensor.
 
-📝 Descriere Generală
-Acest proiect demonstrează o aplicație practică de integrare a unui senzor extern cu o placă FPGA pentru a oferi feedback vizual pe un monitor. Sistemul funcționează ca un indicator de securitate sau prezență, schimbând culoarea întregului ecran în funcție de starea unui senzor de mișcare infraroșu (PIR).
+📝 General Description
+This project demonstrates a practical application of integrating an external sensor with an FPGA board to provide visual feedback on a monitor. The system functions as a security or presence indicator, changing the entire screen's color based on the state of a passive infrared (PIR) motion sensor.
 
-Designul este conceput pentru o placă Digilent Basys 3 și un Pmod PIR, generând un semnal video stabil la rezoluția 1920x1080 (Full HD).
+The design is intended for a Digilent Basys 3 board and a Pmod PIR, generating a stable video signal at a 1920x1080 (Full HD) resolution.
 
-🚦 Funcționalitate
-Logica sistemului este directă și se bazează pe starea semnalului de intrare de la senzor:
+⚙️ Hardware Requirements
+Digilent Basys 3 Board
 
+Digilent Pmod PIR Motion Sensor
 
-Fără Mișcare Detectată: Când intrarea Motion_detected este pe nivel logic 0, modulul Pmod_PIR setează culoarea ecranului la verde.
+A monitor with a VGA input and cable
 
+🚦 Functionality
+The system's logic is straightforward and changes the screen color based on the sensor's state:
 
-Mișcare Detectată: Când senzorul detectează mișcare și setează intrarea Motion_detected pe 1, modulul schimbă instantaneu culoarea ecranului în roșu.
+🟢 Green Screen: No motion is detected (Motion_detected is low).
 
+🔴 Red Screen: Motion is detected (Motion_detected is high).
 
-Afișaj Oprit: În afara zonei vizibile a ecranului (în timpul perioadelor de blanking), toate ieșirile de culoare sunt setate pe negru pentru a respecta standardul VGA.
+⚫ Black Screen: During VGA blanking intervals to maintain a standard signal.
 
-📁 Structura Proiectului
-Proiectul este modular, fiecare fișier având o responsabilitate clară:
+📁 Project Structure
+The project is modular, with each file having a clear responsibility:
 
+vga_top.v
 
-vga_top.v: Modulul principal care integrează toate componentele. Acesta instanțiază un 
+The top-level module that integrates all components. It instantiates a Clocking Wizard to generate the 148.5 MHz clock, the VGA timing controller, and the sensor logic module. It also connects the Motion_detected input port to the internal logic.
 
-Clocking Wizard pentru a genera ceasul de 148.5 MHz , controlerul de temporizare VGA și modulul de logică pentru senzor. De asemenea, conectează portul de intrare 
+vga_1920X1080.v
 
-Motion_detected la logica internă.
+A VGA timing controller that generates the horizontal sync (h_sync) and vertical sync (v_sync) signals for a 1920x1080 pixel resolution. It informs the rest of the system when it is in the active display area via the display_on signal.
 
+Pmod_PIR.v
 
-vga_1920X1080.v: Un controler de temporizare VGA care generează semnalele de sincronizare h_sync și v_sync pentru o rezoluție de 1920x1080 pixeli. Acesta informează restul sistemului când se află în zona de afișare activă prin semnalul 
-display_on.
+Contains the main application logic. It receives the Motion_detected signal and, depending on its value, sets the vgaRed, vgaGreen, and vgaBlue color outputs.
 
+Basys3_Master.xdc
 
-Pmod_PIR.v: Conține logica principală a aplicației. Primește semnalul 
-
-Motion_detected și, în funcție de valoarea acestuia, setează ieșirile de culoare vgaRed, vgaGreen și vgaBlue.
-
-
-Basys3_Master.xdc: Fișierul de constrângeri care mapează porturile din vga_top.v la pinii fizici ai plăcii Basys 3. Cel mai important, mapează intrarea Motion_detected la pinul J1, corespunzător primului pin al conectorului Pmod JA.
+The Xilinx Design Constraints file that maps the ports from vga_top.v to the physical pins of the Basys 3 board. Most importantly, it maps the Motion_detected input to pin J1, corresponding to the first pin of the Pmod JA connector.
