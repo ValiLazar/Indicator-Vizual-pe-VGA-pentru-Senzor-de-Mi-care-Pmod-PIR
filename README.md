@@ -44,3 +44,7 @@ Contains the main application logic. It receives the Motion_detected signal and,
 Basys3_Master.xdc
 
 The Xilinx Design Constraints file that maps the ports from vga_top.v to the physical pins of the Basys 3 board. Most importantly, it maps the Motion_detected input to pin J1, corresponding to the first pin of the Pmod JA connector.
+
+
+https://github.com/user-attachments/assets/b0ebd9f4-5e1e-4f29-be75-3de506c82bb4
+
